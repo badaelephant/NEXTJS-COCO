@@ -1,0 +1,32 @@
+.extra{
+
+    padding: 2px 10px;
+    background-color: wheat;
+    border-radius: 20px;
+    margin-left: 10px;
+    
+    }
+    .headerbtns{
+        margin-left: 10px;
+     width: 70px;
+     padding: 0px 5px;
+     font-size: 1rem;
+     display: flex;
+     justify-content: space-around;
+     align-items: center;
+    }
+    .collapse{
+        margin-top: 5px;
+    }
+    .panel{
+        display: flex;
+        flex-direction: column;
+    }
+    .todoItem{
+        margin: 0px !important;
+   
+    }
+    .todoItemDone{
+        margin: 0px !important;
+        text-decoration: line-through;
+    }
