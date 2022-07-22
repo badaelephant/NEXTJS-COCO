@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
-export default NextAuth({
+export const authOptions = {
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
@@ -37,7 +37,7 @@ export default NextAuth({
     // ...add more providers here
   ],
   session: {
-    jwt: true,
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
   },
   secret: process.env.SECRET,
@@ -46,26 +46,16 @@ export default NextAuth({
   },
   database: process.env.MONGO_URL,
   callbacks: {
-    async jwt({ token, user, account, profile }) {
-      console.log("token==>", token);
-      console.log("user==>", user);
-      console.log("account==>", account);
-      console.log("profile==>", profile);
-      if (user) {
-        token.user = user;
-      }
-      if (account) {
-        token.accessToken = account.access_token;
-      }
-
+    async jwt({ token, user, account, profile, isNewUser }) {
+      if (user) token.user = user;
       return token;
     },
     async session(session, token, user) {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      console.log(baseUrl, "url::", url);
       return baseUrl;
     },
   },
-});
+};
+export default NextAuth(authOptions);

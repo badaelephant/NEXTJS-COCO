@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { Modal, Button, Form, Input } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
-function TodoModal({ isModalVisible, setIsModalVisible }) {
-  const [title, setTitle] = useState("");
-  const [todoItems, setTodoItems] = useState([
-    { content: "content" },
-    { content: "content" },
-    { content: "content" },
-    { content: "content" },
-  ]);
-  const defaultTodo = { content: "newContent" };
+function TodoModal({
+  isModalVisible,
+  setIsModalVisible,
+  inputTitle,
+  inputItems,
+}) {
+  const [title, setTitle] = useState(inputTitle);
+  const [todoItems, setTodoItems] = useState(inputItems);
+  const defaultTodo = { content: "", done: false };
   const deleteTodo = (index) => {
     const currentTodos = todoItems;
     currentTodos.splice(index, 1);
@@ -56,7 +56,7 @@ function TodoModal({ isModalVisible, setIsModalVisible }) {
           <Input
             style={{ borderRadius: "20px" }}
             value={title}
-            onChange={() => setTitle(e.currentTarget.value)}
+            onChange={(e) => setTitle(e.currentTarget.value)}
           />
         </Form.Item>
         {todoItems.map((todo, index) => (
@@ -82,7 +82,7 @@ function TodoModal({ isModalVisible, setIsModalVisible }) {
           </Form.Item>
         ))}
 
-        <Form.Item wrapperCol={{ span: 20, offset: 4 }}>
+        <Form.Item wrapperCol={{ span: 24, offset: 0 }}>
           <Button
             shape="round"
             type="dashed"

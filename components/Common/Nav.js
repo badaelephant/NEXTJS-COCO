@@ -4,7 +4,7 @@ import styles from "./Nav.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Menu } from "antd";
-const items = [
+const menus = [
   {
     title: "Home",
     link: "/",
@@ -13,35 +13,31 @@ const items = [
     title: "Todo",
     link: "/todo",
   },
-  {
-    title: "Not yet",
-    link: "/notyet",
-  },
 ];
 function Nav() {
   const { data: session, status } = useSession();
+
   const router = useRouter();
   const onClickMenu = (e) => {
     const key = +e.key - 1;
-    const link = items[key].link;
-    console.log(link);
+    const link = menus[key].link;
     router.push(link);
   };
   return (
-    <Header>
+    <Header className={styles.header}>
       <Menu
         theme="dark"
         mode="horizontal"
         defaultSelectedKeys={["1"]}
         className={styles.menu}
-        items={items.map((item, index) => {
+        onClick={onClickMenu}
+        items={menus.map((item, index) => {
           const key = index + 1;
           return {
             key,
             label: item.title,
           };
         })}
-        onClick={onClickMenu}
       />
       <div className={styles.authLayout}>
         {status === "authenticated" && (
