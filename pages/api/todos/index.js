@@ -49,7 +49,9 @@ const handler = async (req, res) => {
       }
     case "DELETE":
       try {
-        await TodoList.findOneAndDelete(req.query.id);
+        const id = req.query.id;
+
+        await TodoList.findOneAndDelete({ _id: mongoose.Types.ObjectId(id) });
         return res.status(200).json({
           success: true,
           msg: "delete success",
@@ -62,8 +64,9 @@ const handler = async (req, res) => {
       }
     case "PATCH":
       try {
-        const { title, todoItems } = req.body;
-        await TodoList.findOneAndUpdate(req.query.id, { title, todoItems });
+        const { title, todoItems, id } = req.body;
+        console.log({ title, todoItems, id });
+        await TodoList.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, { title, todoItems });
 
         return res.status(200).json({
           success: true,

@@ -8,9 +8,9 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 function TodoMain() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [openModal, setOpenModal] = useState({ isOpened: false, todo: { title: "", id: "", todoItems: [] }, type: "CREATE" });
   const [todoList, setTodoList] = useState([]);
-  useEffect(() => {
+  const reload = () => {
     const result = axios
       .get("/api/todos")
       .then((result) => {
@@ -21,32 +21,28 @@ function TodoMain() {
         if (res.response.status === 401) signIn();
       });
     console.log("result==>", result);
+  };
+  useEffect(() => {
+    reload();
   }, []);
 
   return (
     <div className={styles.layout}>
       <div className={styles.title}>TODO LIST</div>
       <div className={styles.contentLayout}>
-        <TodoModal
-          isModalVisible={isModalVisible}
-          setIsModalVisible={setIsModalVisible}
-          // inputTitle={todo.title || ""}
-          // inputItems={todo.todoItems || []}
-          inputTitle={""}
-          inputItems={[]}
-        />
+        <TodoModal openModal={openModal} setOpenModal={setOpenModal} reload={reload} />
         <Button
           className={styles.addBtn}
           type="primary"
           shape="round"
           icon={<PlusOutlined />}
           size={"small"}
-          onClick={() => setIsModalVisible(true)}
+          onClick={() => setOpenModal({ isOpened: true, todo: { title: "", id: "", todoItems: [] }, type: "CREATE" })}
         >
           Add
         </Button>
         {todoList.map((todo, index) => (
-          <TodoList todo={todo} key={index} />
+          <TodoList key={index} todo={todo} setOpenModal={setOpenModal} reload={reload} />
         ))}
       </div>
     </div>

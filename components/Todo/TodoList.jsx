@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { Collapse, Checkbox } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import styles from "./TodoList.module.css";
-const CheckboxGroup = Checkbox.Group;
+import axios from "axios";
 const { Panel } = Collapse;
 
-
-function TodoList({ todo }) {
+function TodoList({ todo, setOpenModal, reload }) {
   const [todoItems, setTodoItems] = useState(todo.todoItems);
   const countComplete = () => {
     let total = todoItems.length;
@@ -15,6 +14,14 @@ function TodoList({ todo }) {
       if (item.done) done += 1;
     });
     return `${(done / total) * 100} %`;
+  };
+  const onClickEdit = () => {
+    setOpenModal({ isOpened: true, todo, type: "UPDATE" });
+  };
+  const onClickDelete = async () => {
+    console.log("todo", todo._id);
+    const response = await axios.delete(`/api/todos?id=${todo._id}`);
+    if (response.data.success) reload();
   };
   const genExtra = () => (
     <div
@@ -28,8 +35,8 @@ function TodoList({ todo }) {
       <div className={styles.extra}>{`Date : ${todo.date}`}</div>
       <div className={styles.extra}>{`Complete : ${countComplete()}`}</div>
       <div className={styles.headerbtns}>
-        <EditOutlined />
-        <DeleteOutlined />
+        <EditOutlined onClick={onClickEdit} />
+        <DeleteOutlined onClick={onClickDelete} />
       </div>
     </div>
   );
