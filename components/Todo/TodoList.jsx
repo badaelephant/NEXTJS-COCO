@@ -32,22 +32,25 @@ function TodoList({ todo, setOpenModal, reload }) {
         display: "flex",
       }}
     >
-      <div className={styles.extra}>{`Date : ${todo.date}`}</div>
-      <div className={styles.extra}>{`Complete : ${countComplete()}`}</div>
+      <div className={styles.extra}>{`date : ${todo.date}`}</div>
+      <div className={styles.extra}>{`complete : ${countComplete()}`}</div>
       <div className={styles.headerbtns}>
         <EditOutlined onClick={onClickEdit} />
         <DeleteOutlined onClick={onClickDelete} />
       </div>
     </div>
   );
-  const handleCheckbox = (todo, index) => {
+  const handleCheckbox = async (thisTodo, index) => {
+    console.log("todo==>", todo);
     const currentTodoList = todoItems;
-    currentTodoList[index].done = !todo.done;
+    currentTodoList[index].done = !thisTodo.done;
     setTodoItems([...currentTodoList]);
+    todo.todoItems = [...todoItems];
+    await axios.patch("/api/todos", todo);
   };
 
   return (
-    <Collapse defaultActiveKey={["1"]} className={styles.collapse}>
+    <Collapse defaultActiveKey={["1"]} className={styles.collapse} style={{ width: "90%", marginTop: "20px" }}>
       <Panel header={todo.title} key="1" extra={genExtra()}>
         <div className={styles.panel}>
           {todoItems.map((todo, index) => (

@@ -1,13 +1,14 @@
-import '../styles/globals.css'
+import "../styles/globals.css";
 import "antd/dist/antd.css";
 import { SessionProvider } from "next-auth/react";
 import { Layout } from "antd";
 import Nav from "../components/Common/Nav";
+import Head from "next/head";
 const { Header, Content, Footer } = Layout;
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
-      <Layout className="layout">
+      <Layout className="layout" style={{ fontFamily: "Roboto Mono" }}>
         <Nav />
 
         <Content
@@ -33,5 +34,3 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 }
 
 export default MyApp;
-
-

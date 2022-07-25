@@ -1,9 +1,13 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import axios from "axios";
+import clientPromise from "../../../util/connectDB";
+
 export const authOptions = {
   // Configure one or more authentication providers
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
@@ -47,10 +51,12 @@ export const authOptions = {
   database: process.env.MONGO_URL,
   callbacks: {
     async jwt({ token, user, account, profile, isNewUser }) {
+      console.log("jwt==>", { token, user, account, profile, isNewUser });
       if (user) token.user = user;
       return token;
     },
     async session(session, token, user) {
+      console.log("session==>", { session, token, user });
       return session;
     },
     async redirect({ url, baseUrl }) {

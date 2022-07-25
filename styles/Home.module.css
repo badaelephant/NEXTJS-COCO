@@ -1,34 +1,41 @@
-.header{
+.header {
   width: 100%;
   display: flex;
 }
-.menu{
-  width: calc(100% - 200px)
+.menu {
+  width: calc(100% - 200px);
 }
-.authLayout{
+.authLayout {
   width: 200px;
   display: flex;
   justify-content: flex-end;
 }
-.loginBtn{
+.loginBtn {
   width: 60px;
   color: white;
   text-align: center;
   text-decoration: underline;
   cursor: pointer;
 }
-.userName{
-
+.userName {
   color: white;
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0px 10px;
   text-align: center;
 }
-.logoutBtn{
+.logoutBtn {
   width: 60px;
   color: white;
   text-align: center;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.container {
+  height: calc(100vh - 150px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: xx-large;
 }

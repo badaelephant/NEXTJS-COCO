@@ -11,18 +11,20 @@ const handler = async (req, res) => {
       success: false,
       msg: "Invalide Authentication",
     });
-  console.log("userId", session.token.user._id);
-  const userId = mongoose.Types.ObjectId(session.token.user._id);
+  console.log("session.token.user", session.token.user);
+  const userId = mongoose.Types.ObjectId(session.token.user._id || session.token.user.id);
   switch (method) {
     case "POST":
       try {
         const { title, todoItems } = req.body;
+        console.log({ title, todoItems, userId });
         const newTodo = await new TodoList({
           title,
           todoItems,
           userId,
           date: new Date().toISOString().slice(0, 10).toString(),
         }).save();
+        console.log({ newTodo });
         return res.status(200).json({
           success: true,
           msg: "New Todo Created",
@@ -32,6 +34,7 @@ const handler = async (req, res) => {
         return res.status(500).json({
           success: false,
           msg: error,
+          type: "duplicated",
         });
       }
     case "GET":
@@ -64,9 +67,9 @@ const handler = async (req, res) => {
       }
     case "PATCH":
       try {
-        const { title, todoItems, id } = req.body;
-        console.log({ title, todoItems, id });
-        await TodoList.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, { title, todoItems });
+        const { title, todoItems, _id } = req.body;
+        console.log({ title, todoItems, _id });
+        await TodoList.findOneAndUpdate({ _id: mongoose.Types.ObjectId(_id) }, { title, todoItems });
 
         return res.status(200).json({
           success: true,

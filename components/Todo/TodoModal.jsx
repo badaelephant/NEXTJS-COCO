@@ -23,18 +23,21 @@ function TodoModal({ openModal, setOpenModal, reload }) {
     setTodoItems([...currentTodos]);
   };
   const handleOk = async (values) => {
-    const response =
-      openModal.type === "CREATE"
-        ? await axios.post("/api/todos", {
-            title,
-            todoItems,
-          })
-        : await axios.patch("/api/todos", {
-            id: openModal.todo._id,
-            title,
-            todoItems,
-          });
-    if (response.data.success) reload();
+    try {
+      const response =
+        openModal.type === "CREATE"
+          ? await axios.post("/api/todos", {
+              title,
+              todoItems,
+            })
+          : await axios.patch("/api/todos", {
+              id: openModal.todo._id,
+              title,
+              todoItems,
+            });
+      if (response.data.success) reload();
+    } catch (error) {}
+
     setOpenModal({ isOpened: false, todo: { title: "", id: "", todoItems: [] }, type: "CREATE" });
   };
 

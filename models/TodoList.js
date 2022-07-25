@@ -16,7 +16,6 @@ const todoListSchema = new mongoose.Schema({
   date: {
     type: String,
     required: true,
-    unique: true,
   },
   createdAt: {
     type: Date,
@@ -24,5 +23,4 @@ const todoListSchema = new mongoose.Schema({
   },
 });
 
-export const TodoList =
-  mongoose.models.TodoList || mongoose.model("TodoList", todoListSchema);
+export const TodoList = mongoose.models.TodoList || mongoose.model("TodoList", todoListSchema);

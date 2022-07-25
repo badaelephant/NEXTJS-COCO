@@ -41,9 +41,11 @@ function TodoMain() {
         >
           Add
         </Button>
-        {todoList.map((todo, index) => (
-          <TodoList key={index} todo={todo} setOpenModal={setOpenModal} reload={reload} />
-        ))}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          {todoList.map((todo, index) => (
+            <TodoList key={index} todo={todo} setOpenModal={setOpenModal} reload={reload} />
+          ))}
+        </div>
       </div>
     </div>
   );

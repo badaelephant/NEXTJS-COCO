@@ -1,9 +1,11 @@
 import { Header } from "antd/lib/layout/layout";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Nav.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Menu } from "antd";
+import RegisterModal from "./RegisterModal";
+
 const menus = [
   {
     title: "Home",
@@ -16,6 +18,7 @@ const menus = [
 ];
 function Nav() {
   const { data: session, status } = useSession();
+  const [isRegisterVisible, setIsRegisterVisible] = useState(false);
 
   const router = useRouter();
   const onClickMenu = (e) => {
@@ -25,6 +28,7 @@ function Nav() {
   };
   return (
     <Header className={styles.header}>
+      <RegisterModal isRegisterVisible={isRegisterVisible} setIsRegisterVisible={setIsRegisterVisible} />
       <Menu
         theme="dark"
         mode="horizontal"
@@ -40,23 +44,24 @@ function Nav() {
         })}
       />
       <div className={styles.authLayout}>
-        {status === "authenticated" && (
-          <div style={{ display: "flex" }}>
-            <div className={styles.userName}>
-              {`${session?.token?.user?.nickName} `}
-            </div>
-            <div style={{ color: "white", textAlign: "center", width: "20px" }}>
-              /
-            </div>
-          </div>
-        )}
         {status === "authenticated" ? (
-          <div className={styles.logoutBtn} onClick={() => signOut()}>
-            LogOut
+          <div style={{ display: "flex" }}>
+            <div className={styles.userName}>{`${session.token.user.nickName || session.token.user.name} `}</div>
+            <div style={{ color: "white", textAlign: "center", width: "20px" }}>/</div>
+            <div className={styles.logoutBtn} onClick={() => signOut()}>
+              LogOut
+            </div>
           </div>
         ) : (
-          <div className={styles.loginBtn} onClick={() => signIn()}>
-            LogIn
+          <div style={{ display: "flex" }}>
+            <div className={styles.loginBtn} onClick={() => setIsRegisterVisible(true)}>
+              Register
+            </div>
+
+            <div style={{ color: "white", textAlign: "center", width: "40px" }}>|</div>
+            <div className={styles.loginBtn} onClick={() => signIn()}>
+              LogIn
+            </div>
           </div>
         )}
       </div>
